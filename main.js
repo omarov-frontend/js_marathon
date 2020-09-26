@@ -1,26 +1,30 @@
 // [HomeWork 2] - Задача #1:
-function getRow(firstRow, secondRow, value) {
-    if (value.length > 1) return 'Вы ввели больше одного символа!';
-  
-    let countFirstValue = 0;
-    let countSecondValue = 0;
-
-    for (let i = 0; i < firstRow.length; i++) {
-      if (firstRow.charAt(i) !== value) continue;
-      countFirstValue++;
-    }
-  
-    for (let i = 0; i < secondRow.length; i++) {
-      if (secondRow.charAt(i) !== value) continue;
-      countSecondValue++;
-    }
-
-    return countFirstValue >= countSecondValue ? firstRow : secondRow;
-}
 const firstRow = 'мама мыла раму';
 const secondRow = 'собака друг человека';
-const value = prompt('Введите букву:', 'а');
-alert( getRow(firstRow, secondRow, value) );
+const CHAR = 'а';
+const value = prompt('Введите букву:', CHAR);
+
+function getRow(firstRow, secondRow, CHAR, value) {  
+    let countFirstValue = countedChar(firstRow, CHAR);
+    let countSecondValue = countedChar(secondRow, CHAR);
+
+    if (value.length > 1) return 'Вы ввели больше одного символа!';
+    if (countFirstValue === countSecondValue) return `Здесь одинаковое кол-во букв - '${CHAR}'`;
+
+    return countFirstValue > countSecondValue ? firstRow : secondRow;
+}
+
+function countedChar(row, char) {
+    let counted = 0;
+  
+    for (let i = 0; i < row.length; i++) {
+        if (row.charAt(i) === char) {
+            counted++;
+        }
+    }
+    return counted;
+}
+alert( getRow(firstRow, secondRow, CHAR, value) );
 
 
 // [HomeWork 2] - Задача #2:
