@@ -5,10 +5,10 @@ const character = {
     damageHP: 250,
     elHP: document.getElementById('health-character'),
     elProgressbar: document.getElementById('progressbar-character'),
-    renderHP: renderHP,
-    changeHP: changeHP,
-    renderHPlife: renderHPlife,
-    renderProgressbarHP: renderProgressbarHP,
+    renderHP,
+    changeHP,
+    renderHPlife,
+    renderProgressbarHP,
 };
 
 const enemy = {
@@ -43,7 +43,7 @@ function renderHPlife() {
 }
 
 function renderProgressbarHP() {
-    this.elProgressbar.style.width = this.damageHP / 250 * 100 + '%';
+    this.elProgressbar.style.width = this.damageHP * 100 / this.defaultHP + '%';
 }
 
 function changeHP(count) {
