@@ -17,16 +17,16 @@ const enemy = {
     damageHP: 250,
     elHP: document.getElementById('health-enemy'),
     elProgressbar: document.getElementById('progressbar-enemy'),
-    renderHP: renderHP,
-    changeHP: changeHP,
-    renderHPlife: renderHPlife,
-    renderProgressbarHP: renderProgressbarHP,
+    renderHP,
+    changeHP,
+    renderHPlife,
+    renderProgressbarHP,
 };
 
 $btn.addEventListener('click', function() {
     console.log('Kick');
-    character.changeHP(random(5, 15));
-    enemy.changeHP(random(5, 15));
+    character.changeHP(random(20));
+    enemy.changeHP(random(20));
 });
 
 function init() {
@@ -47,17 +47,50 @@ function renderProgressbarHP() {
 }
 
 function changeHP(count) {
-    if(this.damageHP < count) {
+    this.damageHP -= count;
+
+    const log = this === enemy ? generateLog(this, character, count) : generateLog(this, enemy, count);
+
+    const $logsDiv = document.querySelector('#logs');
+
+    const $p = document.createElement('p');
+    $p.innerText = log;
+
+    $logsDiv.insertBefore($p, $logsDiv.children[0]);
+    
+    console.log( log );
+
+    if(this.damageHP <= 0) {
         this.damageHP = 0;
         alert('Бедный ' + this.name + ' проиграл бой!');
         $btn.disabled = true;
-    } else {
-        this.damageHP -= count;
     }
     this.renderHP();
 }
 
-function random(min, max) {
-    return min + Math.ceil( Math.random() * (max - min + 1) );
+function random(num) {
+    return Math.ceil( Math.random() * num );
 }
+
+function generateLog(firstPerson, secondPerson, count) {
+    //деструктуризация:
+    const { name, damageHP, defaultHP } = firstPerson;
+    const { name: nameEnemy } = secondPerson;
+
+    const logs = [
+        `${name} вспомнил что-то важное, но неожиданно ${nameEnemy}, не помня себя от испуга, ударил в предплечье врага. Нанес - ${count} урона, Оставив - [${damageHP}/${defaultHP}] жизней!`,
+        `${name} поперхнулся, и за это ${nameEnemy} с испугу приложил прямой удар коленом в лоб врага. Нанес - ${count} урона, Оставив - [${damageHP}/${defaultHP}] жизней!`,
+        `${name} забылся, но в это время наглый ${nameEnemy}, приняв волевое решение, неслышно подойдя сзади, ударил. Нанес - ${count} урона, Оставив - [${damageHP}/${defaultHP}] жизней!`,
+        `${name} пришел в себя, но неожиданно ${nameEnemy} случайно нанес мощнейший удар. Нанес - ${count} урона, Оставив - [${damageHP}/${defaultHP}] жизней!`,
+        `${name} поперхнулся, но в это время ${nameEnemy} нехотя раздробил кулаком \<вырезанно цензурой\> противника. Нанес - ${count} урона, Оставив - [${damageHP}/${defaultHP}] жизней!`,
+        `${name} удивился, а ${nameEnemy} пошатнувшись влепил подлый удар. Нанес - ${count} урона, Оставив - [${damageHP}/${defaultHP}] жизней!`,
+        `${name} высморкался, но неожиданно ${nameEnemy} провел дробящий удар. Нанес - ${count} урона, Оставив - [${damageHP}/${defaultHP}] жизней!`,
+        `${name} пошатнулся, и внезапно наглый ${nameEnemy} беспричинно ударил в ногу противника. Нанес - ${count} урона, Оставив - [${damageHP}/${defaultHP}] жизней!`,
+        `${name} расстроился, как вдруг, неожиданно ${nameEnemy} случайно влепил стопой в живот соперника. Нанес - ${count} урона, Оставив - [${damageHP}/${defaultHP}] жизней!`,
+        `${name} пытался что-то сказать, но вдруг, неожиданно ${nameEnemy} со скуки, разбил бровь сопернику. Нанес - ${count} урона, Оставив - [${damageHP}/${defaultHP}] жизней!`,
+    ];
+
+    return logs[random(logs.length) - 1];
+}
+
 init();
