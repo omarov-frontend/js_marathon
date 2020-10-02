@@ -51,12 +51,12 @@ function changeHP(count) {
 
     const log = this === enemy ? generateLog(this, character, count) : generateLog(this, enemy, count);
 
-    const $logsDiv = document.querySelector('#logs');
+    const $logsElement = document.querySelector('#logs');
 
-    const $p = document.createElement('p');
-    $p.innerText = log;
+    const $paragraph = document.createElement('p');
+    $paragraph.innerText = log;
 
-    $logsDiv.insertBefore($p, $logsDiv.children[0]);
+    $logsElement.insertBefore($paragraph, $logsElement.children[0]);
     
     console.log( log );
 
