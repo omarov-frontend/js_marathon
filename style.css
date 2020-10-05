@@ -274,7 +274,7 @@ body {
     min-height: 30px;
     vertical-align: middle;
     padding: 12px 15px;
-    outline: none !important;
+    outline: none;
     cursor: pointer;
     font-size: 18px;
 

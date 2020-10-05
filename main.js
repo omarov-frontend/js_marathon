@@ -2,6 +2,7 @@ const $btnThunder = document.getElementById('btn-kick');
 const $btnFire = document.getElementById('btn-fire');
 const $btnFatality = document.getElementById('btn-fatality');
 const $btnCobra = document.getElementById('btn-cobra');
+
 const character = {
     name: 'Pikachu',
     defaultHP: 250,
@@ -27,74 +28,54 @@ const enemy = {
 };
 
 // функция - замыкание
-function countClick() {
-    let count = 0;
+function countClick(count = 6, el) {
+    const innerText = el.innerText;
+    el.innerText = `${innerText} (${count})`;
 
     return function() {
-        count++;
+        count--;
+        if(count === 0) {
+            el.disabled = true;
+        }
+        el.innerText = `${innerText} (${count})`;
         return count;
     }
 }
 
-const countThunder = countClick();
-const countFire = countClick();
-const countFatality = countClick();
-const countCobra = countClick();
-
+const countThunder = countClick(6, $btnThunder);
 $btnThunder.addEventListener('click', function() {
     console.log(' - K I C K  S T R I K E');
     character.changeHP(random(55));
     enemy.changeHP(random(55));
     
-    let maxStrike = 6;
-    let isThunder = countThunder();
-    console.log( `Использовано ударов: ${isThunder} из ${maxStrike}!`);
-    if(isThunder >= maxStrike) {
-        $btnThunder.disabled = true;
-        alert( `!Вы больше НЕ можете бить этим ударом, попробуйте бить по другому ;)` );
-    }
+    countThunder();
 });
 
+const countFire = countClick(5, $btnFire);
 $btnFire.addEventListener('click', function() {
     console.log(' - F I R E  S T R I K E');
     character.changeHP(random(60));
     enemy.changeHP(random(60));
 
-    let maxStrike = 5;
-    let isFire = countFire();
-    console.log( `Использовано ударов: ${isFire} из ${maxStrike}!`);
-    if(isFire >= maxStrike) {
-        $btnFire.disabled = true;
-        alert( `!Вы больше НЕ можете бить этим ударом, попробуйте бить по другому ;)` );
-    }
+    countFire();
 });
 
+const countFatality = countClick(2, $btnFatality);
 $btnFatality.addEventListener('click', function() {
     console.log(' - F A T A L I T Y  S T R I K E');
     character.changeHP(random(150));
     enemy.changeHP(random(150));
 
-    let maxStrike = 2;
-    let isFatality = countFatality();
-    console.log( `Использовано ударов: ${isFatality} из ${maxStrike}!`);
-    if(isFatality >= maxStrike) {
-        $btnFatality.disabled = true;
-        alert( `!Вы больше НЕ можете бить этим ударом, попробуйте бить по другому ;)` );
-    }
+    countFatality();
 });
 
+const countCobra = countClick(10, $btnCobra);
 $btnCobra.addEventListener('click', function() {
     console.log(' - C O B R A  S T R I K E');
     character.changeHP(random(30));
     enemy.changeHP(random(30));
 
-    let maxStrike = 10;
-    let isCobra = countCobra();
-    console.log( `Использовано ударов: ${isCobra} из ${maxStrike}!`);
-    if(isCobra >= maxStrike) {
-        $btnCobra.disabled = true;
-        alert( `!Вы больше НЕ можете бить этим ударом, попробуйте бить по другому ;)` );
-    }
+    countCobra();
 });
 
 function init() {
