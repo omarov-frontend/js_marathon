@@ -1,31 +1,27 @@
+import Pokemon from './pokemon.js';
+import random from './utils.js';
+
+const player1 = new Pokemon({
+    name: 'Pikachu',
+    defaultHP: 250,
+    damageHP: 250,
+    selectors: 'character',
+});
+
+const player2 = new Pokemon({
+    name: 'Charmander',
+    defaultHP: 250,
+    damageHP: 250,
+    selectors: 'enemy',
+});
+console.log(player1);
+console.log(player2);
+
+
 const $btnThunder = document.getElementById('btn-kick');
 const $btnFire = document.getElementById('btn-fire');
 const $btnFatality = document.getElementById('btn-fatality');
 const $btnCobra = document.getElementById('btn-cobra');
-
-const character = {
-    name: 'Pikachu',
-    defaultHP: 250,
-    damageHP: 250,
-    elHP: document.getElementById('health-character'),
-    elProgressbar: document.getElementById('progressbar-character'),
-    renderHP,
-    changeHP,
-    renderHPlife,
-    renderProgressbarHP,
-};
-
-const enemy = {
-    name: 'Charmander',
-    defaultHP: 250,
-    damageHP: 250,
-    elHP: document.getElementById('health-enemy'),
-    elProgressbar: document.getElementById('progressbar-enemy'),
-    renderHP,
-    changeHP,
-    renderHPlife,
-    renderProgressbarHP,
-};
 
 // функция - замыкание
 function countClick(count = 6, el) {
@@ -45,17 +41,22 @@ function countClick(count = 6, el) {
 const countThunder = countClick(6, $btnThunder);
 $btnThunder.addEventListener('click', function() {
     console.log(' - K I C K  S T R I K E');
-    character.changeHP(random(55));
-    enemy.changeHP(random(55));
-    
+    player1.changeHP(random(55), function(count) {
+        console.log('Some change after change HP', count);
+        consolr.log(generateLog(player1, player2, count));
+    });
+    player2.changeHP(random(55), function(count) {
+        console.log('Some change after change HP', count);
+    });
+
     countThunder();
 });
 
 const countFire = countClick(5, $btnFire);
 $btnFire.addEventListener('click', function() {
     console.log(' - F I R E  S T R I K E');
-    character.changeHP(random(60));
-    enemy.changeHP(random(60));
+    player1.changeHP(random(60));
+    player2.changeHP(random(60));
 
     countFire();
 });
@@ -63,8 +64,8 @@ $btnFire.addEventListener('click', function() {
 const countFatality = countClick(2, $btnFatality);
 $btnFatality.addEventListener('click', function() {
     console.log(' - F A T A L I T Y  S T R I K E');
-    character.changeHP(random(150));
-    enemy.changeHP(random(150));
+    player1.changeHP(random(150));
+    player2.changeHP(random(150));
 
     countFatality();
 });
@@ -72,33 +73,14 @@ $btnFatality.addEventListener('click', function() {
 const countCobra = countClick(10, $btnCobra);
 $btnCobra.addEventListener('click', function() {
     console.log(' - C O B R A  S T R I K E');
-    character.changeHP(random(30));
-    enemy.changeHP(random(30));
+    player1.changeHP(random(30));
+    player2.changeHP(random(30));
 
     countCobra();
 });
 
-function init() {
-    console.log('Start Game!');
-}
-
-function renderHP() {
-    this.renderHPlife();
-    this.renderProgressbarHP();
-}
-
-function renderHPlife() {
-    this.elHP.innerText = this.damageHP + ' / ' + this.defaultHP;
-}
-
-function renderProgressbarHP() {
-    this.elProgressbar.style.width = this.damageHP * 100 / this.defaultHP + '%';
-}
-
 function changeHP(count) {
     this.damageHP -= count;
-
-    const log = this === enemy ? generateLog(this, character, count) : generateLog(this, enemy, count);
 
     const $logsElement = document.querySelector('#logs');
 
@@ -106,6 +88,8 @@ function changeHP(count) {
     $paragraph.innerText = log;
 
     $logsElement.insertBefore($paragraph, $logsElement.children[0]);
+
+    const log = this === enemy ? generateLog(this, character, count) : generateLog(this, enemy, count);
     
     console.log( log );
 
@@ -117,12 +101,10 @@ function changeHP(count) {
     this.renderHP();
 }
 
-const random = (num) => Math.ceil(Math.random() * num);
-
-function generateLog(firstPerson, secondPerson, count) {
+function generateLog(player1, player2, count) {
     //деструктуризация:
-    const { name, damageHP, defaultHP } = firstPerson;
-    const { name: nameEnemy } = secondPerson;
+    const { name, damageHP, defaultHP } = player1;
+    const { name: nameEnemy } = player2;
 
     const logs = [
         `${name} вспомнил что-то важное, но неожиданно ${nameEnemy}, не помня себя от испуга, ударил в предплечье врага. Нанес - ${count} урона, Оставив - [${damageHP}/${defaultHP}] жизней!`,
@@ -139,5 +121,3 @@ function generateLog(firstPerson, secondPerson, count) {
 
     return logs[random(logs.length) - 1];
 }
-
-init();
