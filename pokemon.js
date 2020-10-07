@@ -21,9 +21,11 @@ class Pokemon extends Selectors {
     
         if(this.damageHP <= 0) {
             this.damageHP = 0;
+            alert(`Бедный ${this.name} проиграл бой!`);
+            cb.disabled = true;
         }
         this.renderHP();
-        cb && cb(count);
+        if (cb) cb(count);
     }
 
     renderHP = () => {
@@ -32,11 +34,14 @@ class Pokemon extends Selectors {
     }
     
     renderHPlife = () => {
-        this.elHP.innerText = this.damageHP + ' / ' + this.defaultHP;
+        const { elHP, damageHP, defaultHP } = this;
+        elHP.innerText = `${damageHP} / ${defaultHP}`;
     }
     
     renderProgressbarHP = () => {
-        this.elProgressbar.style.width = this.damageHP * 100 / this.defaultHP + '%';
+        const { elProgressbar, damageHP, defaultHP } = this;
+        const percent = `${damageHP * 100 / defaultHP}`
+        elProgressbar.style.width = `${percent + '%'}`;
     }
 }
 

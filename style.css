@@ -483,9 +483,19 @@ h1 {
     text-align: center;
     border-radius: 15px;
     background-color: #bef897;
+    opacity: .7;
     box-shadow: 5px 5px 5px rgba(0, 0, 0, .2);
 }
 
 #logs p {
     margin: 8px 2px;
+}
+
+.text-red {
+    color: red;
+    font-weight: bold;
+}
+.text-green {
+    color: green;
+    font-weight: bold;
 }
