@@ -1,4 +1,4 @@
 # js_marathon
 Марафон по JS
 
-Demo - https://omarov-frontend.github.io/js_marathon/
+Demo - https://tender-kilby-8d368c.netlify.app/
