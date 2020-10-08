@@ -1,27 +1,79 @@
 import Pokemon from './pokemon.js';
 import { random } from './utils.js';
+import { pokemons } from './pokemons.js';
 
-const player1 = new Pokemon({
-    name: 'Pikachu',
-    defaultHP: 250,
-    damageHP: 250,
-    selectors: 'character',
-});
+const $control = document.querySelector('.control');
+const $logs = document.querySelector('#logs');
 
-const player2 = new Pokemon({
-    name: 'Charmander',
-    defaultHP: 250,
-    damageHP: 250,
-    selectors: 'enemy',
-});
-console.log(player1);
-console.log(player2);
+
+function btnRenderStart(name) {
+    $control.innerHTML = '';
+    const $btnStart = document.createElement('button');
+    $btnStart.classList.add('button');
+    $btnStart.innerText = name;
+    $btnStart.addEventListener('click', startGame);
+    $control.appendChild($btnStart);
+}
+btnRenderStart('Start Game!');
+  
+function startGame() {
+    $control.innerHTML = '';
+    $logs.innerHTML = '';
+    renderPlayers();
+    renderAttackBtns();
+}
+
+// рандомная генерация игроков
+function renderPlayers() {
+    const randomPokemonPlayer1 = pokemons[ random(pokemons.length - 1) ];
+    const randomPokemonPlayer2 = filteredPokemons[ random(filteredPokemons.length - 1) ];
+    const filteredPokemons = pokemons.filter(i => i !== randomPokemonPlayer1);
+  
+    const player1 = new Pokemon({
+      ...randomPokemonPlayer1,
+      selectors: 'player1',
+    });
+  
+    const player2 = new Pokemon({
+      ...randomPokemonPlayer2,
+      selectors: 'player2',
+    });
+  
+    player1.renderPlayer();
+    player2.renderPlayer();
+}
+
+function renderAttackBtns() {
+    player1.attacks.forEach(i => {
+        const $btn = document.createElement('button');
+        $btn.classList.add('button');
+        $control.appendChild($btn);
+        $btn.innerText = i.name;
+  
+        const btnCount = countBtn(i.maxCount, $btn);
+  
+        $btn.addEventListener('click', () => {
+            btnCount();
+            player1.changeHp(random(40, 20), player1, fightLog);
+            player2.changeHp(random(i.maxDamage, i.minDamage), player2, fightLog);
+        })
+        $control.appendChild($btn);
+    })
+}
+
+function counter(count = 0) {
+    return function() {
+      count++;
+      return count;
+    }
+}
+const newRoundCounter = counter();
 
 // функция - замыкание
-function countClick(count = 6, el) {
+function countBtn(count = 10, el) {
     const innerText = el.innerText;
     el.innerText = `${innerText} (${count})`;
-
+  
     return function() {
         count--;
         el.innerText = `${innerText} (${count})`;
@@ -32,82 +84,37 @@ function countClick(count = 6, el) {
     }
 }
 
-const BTNS = { 
-    thunder: document.getElementById('btn-kick'), 
-    fire: document.getElementById('btn-fire'),
-    fatality: document.getElementById('btn-fatality'),
-    cobra: document.getElementById('btn-cobra'),
+function fightLog(count, player) {
+    const $paragraph = document.createElement('p');
+    let log;
+
+    if(player.damageHP === 0) {
+        btnRenderStart('Restart Game!');
+
+        log = player === player2 ? `&#127752;Round ${newRoundCounter()}<hr>${generateLog(player, player1, count)}<br>&#129308;&#129307;The fight is over!<br>${player.name}&#128128; проиграл!`
+        : `${generateLog(player, player2, count)}<br>&#129308;&#129307;The fight is over!<br>${player.name}&#128128; проиграл!<hr>`;
+    } else {
+        log = player === player2 ? `&#127752;Round ${newRoundCounter()}<hr>${generateLog(player, player1, count)}`
+        : `${generateLog(player, player2, count)}<hr>`;
+    }
+    $paragraph.innerHTML = `${ log }`;
+    $logs.insertBefore($paragraph, $logs.children[0]);
 }
 
-const countThunder = countClick(6, BTNS.thunder);
-BTNS.thunder.addEventListener('click', function() {
-    countThunder();
-
-    player1.changeHP(random(55), function(count) {
-        generateLog(player1, player2, count);
-    });
-    player2.changeHP(random(55), function(count) {
-        generateLog(player2, player1, count);
-    });
-});
-
-const countFire = countClick(5, BTNS.fire);
-BTNS.fire.addEventListener('click', function() {
-    countFire();
-
-    player1.changeHP(random(60), function(count) {
-        generateLog(player1, player2, count);
-    });
-    player2.changeHP(random(60), function(count) {
-        generateLog(player2, player1, count);
-    });
-});
-
-const countFatality = countClick(2, BTNS.fatality);
-BTNS.fatality.addEventListener('click', function() {
-    countFatality();
-
-    player1.changeHP(random(150), function(count) {
-        generateLog(player1, player2, count);
-    });
-    player2.changeHP(random(150), function(count) {
-        generateLog(player2, player1, count);
-    });
-});
-
-const countCobra = countClick(10, BTNS.cobra);
-BTNS.cobra.addEventListener('click', function() {
-    countCobra();
-
-    player1.changeHP(random(30), function(count) {
-        generateLog(player1, player2, count);
-    });
-    player2.changeHP(random(30), function(count) {
-        generateLog(player2, player1, count);
-    });
-});
-
-function generateLog(player1, player2, count) {
+function generateLog(firstPerson, secondPerson, count) {
 
     const logs = [
-        `<strong>${player1.name}</strong> вспомнил что-то важное, но неожиданно <strong>${player2.name}</strong>, не помня себя от испуга, ударил в предплечье врага. Нанес - <span class='text-red'>${count}</span> урона, Оставив - <span class='text-green'>${player1.damageHP} из ${player2.defaultHP}</span> жизней!`,
-        `<strong>${player1.name}</strong> поперхнулся, и за это <strong>${player2.name}</strong> с испугу приложил прямой удар коленом в лоб врага. Нанес - <span class='text-red'>${count}</span> урона, Оставив - <span class='text-green'>${player1.damageHP} из ${player2.defaultHP}</span> жизней!`,
-        `<strong>${player1.name}</strong> забылся, но в это время наглый <strong>${player2.name}</strong>, приняв волевое решение, неслышно подойдя сзади, ударил. Нанес - <span class='text-red'>${count}</span> урона, Оставив - <span class='text-green'>${player1.damageHP} из ${player2.defaultHP}</span> жизней!`,
-        `<strong>${player1.name}</strong> пришел в себя, но неожиданно <strong>${player2.name}</strong> случайно нанес мощнейший удар. Нанес - <span class='text-red'>${count}</span> урона, Оставив - <span class='text-green'>${player1.damageHP} из ${player2.defaultHP}</span> жизней!`,
-        `<strong>${player1.name}</strong> поперхнулся, но в это время <strong>${player2.name}</strong> нехотя раздробил кулаком \<вырезанно цензурой\> противника. Нанес - <span class='text-red'>${count}</span> урона, Оставив - <span class='text-green'>${player1.damageHP} из ${player2.defaultHP}</span> жизней!`,
-        `<strong>${player1.name}</strong> удивился, а <strong>${player2.name}</strong> пошатнувшись влепил подлый удар. Нанес - <span class='text-red'>${count}</span> урона, Оставив - <span class='text-green'>${player1.damageHP} из ${player2.defaultHP}</span> жизней!`,
-        `<strong>${player1.name}</strong> высморкался, но неожиданно <strong>${player2.name}</strong> провел дробящий удар. Нанес - <span class='text-red'>${count}</span> урона, Оставив - <span class='text-green'>${player1.damageHP} из ${player2.defaultHP}</span> жизней!`,
-        `<strong>${player1.name}</strong> пошатнулся, и внезапно наглый <strong>${player2.name}</strong> беспричинно ударил в ногу противника. Нанес - <span class='text-red'>${count}</span> урона, Оставив - <span class='text-green'>${player1.damageHP} из ${player2.defaultHP}</span> жизней!`,
-        `<strong>${player1.name}</strong> расстроился, как вдруг, неожиданно <strong>${player2.name}</strong> случайно влепил стопой в живот соперника. Нанес - <span class='text-red'>${count}</span> урона, Оставив - <span class='text-green'>${player1.damageHP} из ${player2.defaultHP}</span> жизней!`,
-        `<strong>${player1.name}</strong> пытался что-то сказать, но вдруг, неожиданно <strong>${player2.name}</strong> со скуки, разбил бровь сопернику. Нанес - <span class='text-red'>${count}</span> урона, Оставив - <span class='text-green'>${player1.damageHP} из ${player2.defaultHP}</span> жизней!`,
+        `<strong>${firstPerson.name}</strong> вспомнил что-то важное, но неожиданно <strong>${secondPerson.name}</strong>, не помня себя от испуга, ударил в предплечье врага. Нанес - <span class='text-red'>${count}</span> урона, Оставив - <span class='text-green'>${firstPerson.damageHP} из ${secondPerson.defaultHP}</span> жизней!`,
+        `<strong>${firstPerson.name}</strong> поперхнулся, и за это <strong>${secondPerson.name}</strong> с испугу приложил прямой удар коленом в лоб врага. Нанес - <span class='text-red'>${count}</span> урона, Оставив - <span class='text-green'>${firstPerson.damageHP} из ${secondPerson.defaultHP}</span> жизней!`,
+        `<strong>${firstPerson.name}</strong> забылся, но в это время наглый <strong>${secondPerson.name}</strong>, приняв волевое решение, неслышно подойдя сзади, ударил. Нанес - <span class='text-red'>${count}</span> урона, Оставив - <span class='text-green'>${firstPerson.damageHP} из ${secondPerson.defaultHP}</span> жизней!`,
+        `<strong>${firstPerson.name}</strong> пришел в себя, но неожиданно <strong>${secondPerson.name}</strong> случайно нанес мощнейший удар. Нанес - <span class='text-red'>${count}</span> урона, Оставив - <span class='text-green'>${firstPerson.damageHP} из ${secondPerson.defaultHP}</span> жизней!`,
+        `<strong>${firstPerson.name}</strong> поперхнулся, но в это время <strong>${secondPerson.name}</strong> нехотя раздробил кулаком \<вырезанно цензурой\> противника. Нанес - <span class='text-red'>${count}</span> урона, Оставив - <span class='text-green'>${firstPerson.damageHP} из ${secondPerson.defaultHP}</span> жизней!`,
+        `<strong>${firstPerson.name}</strong> удивился, а <strong>${secondPerson.name}</strong> пошатнувшись влепил подлый удар. Нанес - <span class='text-red'>${count}</span> урона, Оставив - <span class='text-green'>${firstPerson.damageHP} из ${secondPerson.defaultHP}</span> жизней!`,
+        `<strong>${firstPerson.name}</strong> высморкался, но неожиданно <strong>${secondPerson.name}</strong> провел дробящий удар. Нанес - <span class='text-red'>${count}</span> урона, Оставив - <span class='text-green'>${firstPerson.damageHP} из ${secondPerson.defaultHP}</span> жизней!`,
+        `<strong>${firstPerson.name}</strong> пошатнулся, и внезапно наглый <strong>${secondPerson.name}</strong> беспричинно ударил в ногу противника. Нанес - <span class='text-red'>${count}</span> урона, Оставив - <span class='text-green'>${firstPerson.damageHP} из ${secondPerson.defaultHP}</span> жизней!`,
+        `<strong>${firstPerson.name}</strong> расстроился, как вдруг, неожиданно <strong>${secondPerson.name}</strong> случайно влепил стопой в живот соперника. Нанес - <span class='text-red'>${count}</span> урона, Оставив - <span class='text-green'>${firstPerson.damageHP} из ${secondPerson.defaultHP}</span> жизней!`,
+        `<strong>${firstPerson.name}</strong> пытался что-то сказать, но вдруг, неожиданно <strong>${secondPerson.name}</strong> со скуки, разбил бровь сопернику. Нанес - <span class='text-red'>${count}</span> урона, Оставив - <span class='text-green'>${firstPerson.damageHP} из ${secondPerson.defaultHP}</span> жизней!`,
     ];
 
-    const log = logs[random(logs.length) - 1];
-
-    const $logsElement = document.querySelector('#logs');
-
-    const $paragraph = document.createElement('p');
-    $paragraph.innerHTML = log;
-
-    $logsElement.insertBefore($paragraph, $logsElement.children[0]);
+    return logs[ random(logs.length) - 1 ];
 }
