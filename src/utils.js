@@ -1,7 +1,7 @@
-function random(num) {
-    return Math.ceil( Math.random() * num );
+function random(max, min = 0) {
+    const num = max - min;
+    
+    return Math.ceil(Math.random() * num) + min;
 }
 
-export {
-    random,
-}
+export default random;

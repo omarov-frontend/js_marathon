@@ -9,7 +9,7 @@ export const pokemons = [
                 name: "thunder jolt",
                 maxDamage: 40,
                 minDamage: 20,
-                maxCount: 100,
+                maxCount: 10,
             },
             {
                 name: "electro ball",
@@ -41,7 +41,7 @@ export const pokemons = [
                 name: "ember",
                 maxDamage: 40,
                 minDamage: 20,
-                maxCount: 100,
+                maxCount: 10,
             },
             {
                 name: "flamethrower",
@@ -73,7 +73,7 @@ export const pokemons = [
                 name: "tackle",
                 maxDamage: 40,
                 minDamage: 20,
-                maxCount: 100,
+                maxCount: 10,
             },
             {
                 name: "vine whip",
@@ -105,7 +105,7 @@ export const pokemons = [
                 name: "bubble",
                 maxDamage: 40,
                 minDamage: 20,
-                maxCount: 100,
+                maxCount: 10,
             },
             {
                 name: "water gun",
@@ -137,7 +137,7 @@ export const pokemons = [
                 name: "Air Slash",
                 maxDamage: 40,
                 minDamage: 20,
-                maxCount: 100,
+                maxCount: 10,
             },
             {
                 name: "Razor Wind",
@@ -169,7 +169,7 @@ export const pokemons = [
                 name: "Pound",
                 maxDamage: 40,
                 minDamage: 20,
-                maxCount: 100,
+                maxCount: 10,
             },
             {
                 name: "Ancient Power",

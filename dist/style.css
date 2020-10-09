@@ -35,15 +35,11 @@ body {
 }
 
 .control {
-    width: 380px;
-    height: 260px;
     position: relative;
     margin: 20px;
     display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
 .playground {
@@ -196,6 +192,7 @@ body {
     height: 100%;
     background: -webkit-gradient(linear, left top, right top, from(lime), to(#8bf500));
     background: linear-gradient(to right, lime, #8bf500);
+    transition: 1s ease-in-out;
 }
 .pokemon .details .hp .bar .health.low {
     background: -webkit-gradient(linear, left top, right top, from(#ffcc00), to(#f1f500));
@@ -269,13 +266,12 @@ body {
 
 .button {
     position: relative;
-    width: 181px;
     background: white;
     border: 2px solid #ffc55b;
     border-radius: 10px;
     min-height: 30px;
     vertical-align: middle;
-    padding: 12px 15px;
+    padding: 12px 20px;
     outline: none;
     cursor: pointer;
     font-size: 18px;
