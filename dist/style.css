@@ -190,28 +190,24 @@ body {
 .pokemon .details .hp .bar .health {
     width: 50%;
     height: 100%;
-    background: -webkit-gradient(linear, left top, right top, from(lime), to(#8bf500));
-    background: linear-gradient(to right, lime, #8bf500);
-    transition: 1s ease-in-out;
+    background-image: linear-gradient(to right, lime, #8bf500);
+    transition: all 1s ease-in-out;
 }
 .pokemon .details .hp .bar .health.low {
-    background: -webkit-gradient(linear, left top, right top, from(#ffcc00), to(#f1f500));
-    background: linear-gradient(to right, #ffcc00, #f1f500);
+    background-image: linear-gradient(to right, #ffcc00, #f1f500);
 }
 .pokemon .details .hp .bar .health.critical {
-    background: -webkit-gradient(linear, left top, right top, from(#d20000), to(#f51700));
-    background: linear-gradient(to right, #d20000, #f51700);
+    background-image: linear-gradient(to right, #d20000, #f51700);
 }
 .pokemon .pokeball {
     position: absolute;
-    fill: white;
+    fill: #fff;
     opacity: 0.5;
     -webkit-transition: all 0.5s ease;
     transition: all 0.5s ease;
     width: 76%;
     left: 12%;
     top: 47%;
-    -webkit-transform: translateY(-50%);
     transform: translateY(-50%);
 }
 .pokemon .cell {
@@ -221,11 +217,10 @@ body {
 .pokemon .cell .bg {
     stroke: rgba(255, 255, 255, 0.5);
     fill: rgba(255, 255, 255, 0.5);
-    -webkit-transition: all 1.15s ease;
     transition: all 1.15s ease;
 }
 .pokemon .cell .stroke {
-    stroke: white;
+    stroke: #fff;
     stroke-width: 4px;
 }
 .pokemon:after {
@@ -239,7 +234,6 @@ body {
     border-radius: 100% 100% 70% 70% / 70% 70% 20% 20%;
     background: transparent;
     box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
-    -webkit-transition: all 0.2s ease;
     transition: all 0.2s ease;
     z-index: -2;
 }
@@ -247,9 +241,7 @@ body {
     box-shadow: 0 20px 30px rgba(0, 0, 0, 0.5);
 }
 .pokemon.selected .cell {
-    -webkit-filter: drop-shadow(0px 2px 6px white);
-    filter: drop-shadow(0px 2px 6px white);
-    -webkit-transform: scale(1.02);
+    filter: drop-shadow(0px 2px 6px #fff);
     transform: scale(1.02);
 }
 .pokemon.selected .cell .bg {
@@ -260,13 +252,12 @@ body {
     opacity: 0.8;
 }
 .pokemon.selected .sprite {
-    -webkit-animation: bounce 0.8s ease infinite;
     animation: bounce 0.8s ease infinite;
 }
 
 .button {
     position: relative;
-    background: white;
+    background: #fff;
     border: 2px solid #ffc55b;
     border-radius: 10px;
     min-height: 30px;
@@ -284,20 +275,18 @@ body {
     right: -5px;
     top: -5px;
     bottom: -5px;
-    background: white;
+    background: #fff;
     border-radius: 13px;
     z-index: -1;
     box-shadow: 0 3px 5px -2px rgba(0, 0, 0, 0.2);
 }
 .button:hover {
-    background: -webkit-gradient(linear, left top, left bottom, from(#ffd78e), to(#ffc55b));
-    background: linear-gradient(to bottom, #ffd78e, #ffc55b);
-    border-color: white;
+    background-image: linear-gradient(to bottom, #ffd78e, #ffc55b);
+    border-color: #fff;
 }
 .button:hover:after {
-    background: -webkit-gradient(linear, left top, left bottom, from(#ffd78e), to(#ffc55b));
-    background: linear-gradient(to bottom, #ffd78e, #ffc55b);
-    box-shadow: 0 0 5px 2px white, 0 0 15px #ffe9c1, 0 3px 5px -2px rgba(0, 0, 0, 0.2);
+    background-image: linear-gradient(to bottom, #ffd78e, #ffc55b);
+    box-shadow: 0 0 5px 2px #fff, 0 0 15px #ffe9c1, 0 3px 5px -2px rgba(0, 0, 0, 0.2);
 }
 
 .candy {
@@ -307,28 +296,22 @@ body {
     left: 55%;
     height: 12px;
     width: 12px;
-    -webkit-transform: scale(1);
     transform: scale(1);
     margin: 12px;
 }
 .candy.mighty {
-    -webkit-filter: hue-rotate(300deg) saturate(2.2);
     filter: hue-rotate(300deg) saturate(2.2);
 }
 .candy.smart {
-    -webkit-filter: hue-rotate(200deg) saturate(1) brightness(0.65) contrast(3);
     filter: hue-rotate(200deg) saturate(1) brightness(0.65) contrast(3);
 }
 .candy.tough {
-    -webkit-filter: hue-rotate(170deg) saturate(1) brightness(0.65) contrast(3.1);
     filter: hue-rotate(170deg) saturate(1) brightness(0.65) contrast(3.1);
 }
 .candy.courage {
-    -webkit-filter: hue-rotate(40deg) saturate(1) brightness(0.8) contrast(2);
     filter: hue-rotate(40deg) saturate(1) brightness(0.8) contrast(2);
 }
 .candy.quick {
-    -webkit-filter: hue-rotate(140deg) saturate(1) brightness(0.8) contrast(1.8);
     filter: hue-rotate(140deg) saturate(1) brightness(0.8) contrast(1.8);
 }
 .candy:after {
@@ -346,7 +329,6 @@ body {
     position: absolute;
     top: 54%;
     left: 39%;
-    -webkit-animation: float 1s ease infinite;
     animation: float 1s ease infinite;
 }
 .heart:after {
@@ -360,11 +342,9 @@ body {
 @-webkit-keyframes boing {
     0%,
     100% {
-        -webkit-transform: translateY(-50%) translateX(-90%) scaleX(1) scaleY(1);
         transform: translateY(-50%) translateX(-90%) scaleX(1) scaleY(1);
     }
     50% {
-        -webkit-transform: translateY(-50%) translateX(-60%) scaleX(0.95) scaleY(1.1);
         transform: translateY(-50%) translateX(-60%) scaleX(0.95) scaleY(1.1);
     }
 }
@@ -372,55 +352,45 @@ body {
 @keyframes boing {
     0%,
     100% {
-        -webkit-transform: translateY(-50%) translateX(-90%) scaleX(1) scaleY(1);
         transform: translateY(-50%) translateX(-90%) scaleX(1) scaleY(1);
     }
     50% {
-        -webkit-transform: translateY(-50%) translateX(-60%) scaleX(0.95) scaleY(1.1);
         transform: translateY(-50%) translateX(-60%) scaleX(0.95) scaleY(1.1);
     }
 }
 @-webkit-keyframes bounce {
     0%,
     100% {
-        -webkit-transform: translateY(-50%) translateX(-50%) scaleX(1) scaleY(1);
         transform: translateY(-50%) translateX(-50%) scaleX(1) scaleY(1);
     }
     50% {
-        -webkit-transform: translateY(-60%) translateX(-50%) scaleX(0.95) scaleY(1.03);
         transform: translateY(-60%) translateX(-50%) scaleX(0.95) scaleY(1.03);
     }
 }
 @keyframes bounce {
     0%,
     100% {
-        -webkit-transform: translateY(-50%) translateX(-50%) scaleX(1) scaleY(1);
         transform: translateY(-50%) translateX(-50%) scaleX(1) scaleY(1);
     }
     50% {
-        -webkit-transform: translateY(-60%) translateX(-50%) scaleX(0.95) scaleY(1.03);
         transform: translateY(-60%) translateX(-50%) scaleX(0.95) scaleY(1.03);
     }
 }
 @-webkit-keyframes float {
     0%,
     100% {
-        -webkit-transform: translateY(-50%) translateX(-50%);
         transform: translateY(-50%) translateX(-50%);
     }
     50% {
-        -webkit-transform: translateY(-57%) translateX(-50%);
         transform: translateY(-57%) translateX(-50%);
     }
 }
 @keyframes float {
     0%,
     100% {
-        -webkit-transform: translateY(-50%) translateX(-50%);
         transform: translateY(-50%) translateX(-50%);
     }
     50% {
-        -webkit-transform: translateY(-57%) translateX(-50%);
         transform: translateY(-57%) translateX(-50%);
     }
 }

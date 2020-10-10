@@ -67,18 +67,18 @@ function renderPlayers() {
 }
 
 function renderAttackBtns() {
-    player1.attacks.forEach(item => {
+    player1.attacks.forEach(attack => {
         const $btn = document.createElement('button');
         $btn.classList.add('button');
         $control.appendChild($btn);
-        $btn.innerText = item.name;
+        $btn.innerText = attack.name;
 
-        const btnCount = countBtn(item.maxCount, $btn);
+        const btnCount = countBtn(attack.maxCount, $btn);
     
         $btn.addEventListener('click', () => {
             btnCount();
             player1.changeHp(random(40, 20), player1, fightLog);
-            player2.changeHp(random(item.maxDamage, item.minDamage), player2, fightLog);
+            player2.changeHp(random(attack.maxDamage, attack.minDamage), player2, fightLog);
         })
         $control.appendChild($btn);
     })
@@ -86,8 +86,7 @@ function renderAttackBtns() {
 
 function counter(count = 0) {
     return function() {
-        count++;
-        return count;
+        return ++count;
     }
 }
 const newRoundCounter = counter();
