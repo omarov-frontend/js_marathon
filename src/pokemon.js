@@ -48,6 +48,15 @@ class Pokemon extends Selectors {
     renderProgressbarHp = () => {
         let percent = `${this.hp.current / this.hp.default * 100}`;
         this.elProgressbar.style.width = `${percent + '%'}`;
+
+        //отрисовка жизни
+        this.elProgressbar.classList.remove('low', 'critical');
+            if(percent < 60 && percent > 20) {
+                this.elProgressbar.classList.add('low');
+            } 
+            if(percent < 20) {
+                this.elProgressbar.classList.add('critical');
+            }
     }
 
     renderImg = () => {
