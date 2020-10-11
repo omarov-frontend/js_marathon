@@ -1,11 +1,8 @@
 import Pokemon from './pokemon.js';
 import random from './utils.js';
-import { pokemons } from './pokemons.js';
 
 const $control = document.querySelector('.control');
 const $logs = document.querySelector('#logs');
-let player1, player2;
-let pokemonsCopy = [...pokemons];
 
 // запуск игры
 function renderStartBtn(name) {
@@ -17,71 +14,10 @@ function renderStartBtn(name) {
     $control.appendChild($startBtn);
 }
 
-function renderNextEnemyBtn() {
-    const $newEnemyBtn = document.createElement('button');
-    $newEnemyBtn.classList.add('button');
-    $newEnemyBtn.innerText = 'Next Enemy!';
-    $newEnemyBtn.addEventListener('click', () => {
-        $control.innerHTML = '';
-        renderPlayer2();
-        renderAttackBtns();
-    });
-    $control.appendChild($newEnemyBtn);
-}
-renderStartBtn('Start Game!');
-
 function startGame() {
     $logs.innerHTML = '';
     $control.innerHTML = '';
-    renderPlayers();
-    renderAttackBtns();
-}
-
-// рандомный выбор покемона
-function randomPokemonGenerator() {
-    const randomPokemon = pokemonsCopy[random(pokemonsCopy.length - 1)];
-    pokemonsCopy = pokemonsCopy.filter(item => item !== randomPokemon);
-  
-    return randomPokemon;
-}
-
-function renderPlayer1() {
-    player1 = new Pokemon({
-        ...randomPokemonGenerator(),
-        selectors: 'player1',
-    });
-    player1.renderPlayer();
-}
-
-function renderPlayer2() {
-    player2 = new Pokemon({
-        ...randomPokemonGenerator(),
-        selectors: 'player2',
-    });
-    player2.renderPlayer();
-}
-
-function renderPlayers() {
-    renderPlayer1();
-    renderPlayer2();
-}
-
-function renderAttackBtns() {
-    player1.attacks.forEach(attack => {
-        const $btn = document.createElement('button');
-        $btn.classList.add('button');
-        $control.appendChild($btn);
-        $btn.innerText = attack.name;
-
-        const btnCount = countBtn(attack.maxCount, $btn);
-    
-        $btn.addEventListener('click', () => {
-            btnCount();
-            player1.changeHp(random(40, 20), player1, fightLog);
-            player2.changeHp(random(attack.maxDamage, attack.minDamage), player2, fightLog);
-        })
-        $control.appendChild($btn);
-    })
+    game.start();
 }
 
 function counter(count = 0) {
@@ -106,26 +42,6 @@ function countBtn(count = 10, el) {
     }
 }
 
-function fightLog(count, player) {
-    const $paragraph = document.createElement('p');
-    let log;
-    let $buttons = document.querySelectorAll('.button');
-  
-    if (player.hp.current === 0) {
-        $buttons.forEach(item => item.disabled = true);
-        renderStartBtn('Restart Game!');
-        renderNextEnemyBtn();
-        log = player === player2 ? `Round ${newRoundCounter()}<hr>${generateLog(player, player1, count)}<br><strong>${player1.name}</strong> - Выиграл!🏆<br><strong>${player.name}</strong> - Проиграл!😢`
-        : `${generateLog(player, player2, count)}<br><strong>${player2.name}</strong> - Выиграл!🏆<br><strong>${player.name}</strong> - Проиграл!😢<hr>`;
-    } else {
-        log = player === player2
-            ? `Round ${newRoundCounter()}<hr>${generateLog(player, player1, count)}`
-            : `${generateLog(player, player2, count)}<hr>`;
-    }
-    $paragraph.innerHTML = `${ log }`;
-    $logs.insertBefore($paragraph, $logs.children[0]);
-}
-
 function generateLog(firstPerson, secondPerson, count) {
 
     const logs = [
@@ -143,3 +59,78 @@ function generateLog(firstPerson, secondPerson, count) {
 
     return logs[ random(logs.length) - 1 ];
 }
+
+
+class Game {
+    player1;
+    player2;
+
+    getRandomPokemon = async () => {
+        const res = await fetch('https://reactmarathon-api.netlify.app/api/pokemons?random=true');
+        const body = await res.json();
+    
+        return body;
+    }
+
+    getKick = async (player1id, player2id, attackId) => {
+        const res = await fetch(`https://reactmarathon-api.netlify.app/api/fight?player1id=${player1id}&attackId=${attackId}&player2id=${player2id}`);
+        const body = await res.json();
+    
+        return body;
+    }
+
+    fightLog = async (count, player) => {
+        const $paragraph = document.createElement('p');
+        let log;
+        let $buttons = document.querySelectorAll('.button');
+      
+        if (player.hp.current === 0) {
+            $buttons.forEach(item => item.disabled = true);
+            renderStartBtn('Restart Game!');
+            log = player === player2 ? `Round ${newRoundCounter()}<hr>${generateLog(player, player1, count)}<br><strong>${player1.name}</strong> - Выиграл!🏆<br><strong>${player.name}</strong> - Проиграл!😢`
+            : `${generateLog(player, player2, count)}<br><strong>${player2.name}</strong> - Выиграл!🏆<br><strong>${player.name}</strong> - Проиграл!😢<hr>`;
+        } else {
+            log = player === player2
+                ? `Round ${newRoundCounter()}<hr>${generateLog(player, player1, count)}`
+                : `${generateLog(player, player2, count)}<hr>`;
+        }
+        $paragraph.innerHTML = `${ log }`;
+        $logs.insertBefore($paragraph, $logs.children[0]);
+    }
+
+    start = async () => {
+        this.player1 = new Pokemon({
+            ...(await this.getRandomPokemon()),
+            selectors: 'player1',
+        });
+
+        this.player2 = new Pokemon({
+            ...(await this.getRandomPokemon()),
+            selectors: 'player2',
+        });
+
+        this.player1.renderPlayer();
+        this.player2.renderPlayer();
+
+        this.player1.attacks.forEach(attack => {
+            const $btn = document.createElement('button');
+            $btn.classList.add('button');
+            $control.appendChild($btn);
+            $btn.innerText = attack.name;
+      
+            const btnCount = countBtn(attack.maxCount, $btn);
+      
+            $btn.addEventListener('click', async () => {
+                const count = await this.getKick(this.player1.id, this.player2.id, attack.id);
+                btnCount();
+                this.player1.changeHp(count.kick.player1, this.player1, this.fightLog);
+                this.player2.changeHp(count.kick.player2, this.player2, this.fightLog);
+            })
+            $control.appendChild($btn);
+        })
+    }
+}
+
+const game = new Game();
+
+renderStartBtn('Start Game!');

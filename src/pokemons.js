@@ -9,7 +9,7 @@ export const pokemons = [
                 name: "thunder jolt",
                 maxDamage: 40,
                 minDamage: 20,
-                maxCount: 10,
+                maxCount: 100,
             },
             {
                 name: "electro ball",
@@ -41,7 +41,7 @@ export const pokemons = [
                 name: "ember",
                 maxDamage: 40,
                 minDamage: 20,
-                maxCount: 10,
+                maxCount: 100,
             },
             {
                 name: "flamethrower",
@@ -73,7 +73,7 @@ export const pokemons = [
                 name: "tackle",
                 maxDamage: 40,
                 minDamage: 20,
-                maxCount: 10,
+                maxCount: 100,
             },
             {
                 name: "vine whip",
@@ -105,7 +105,7 @@ export const pokemons = [
                 name: "bubble",
                 maxDamage: 40,
                 minDamage: 20,
-                maxCount: 10,
+                maxCount: 100,
             },
             {
                 name: "water gun",
@@ -137,7 +137,7 @@ export const pokemons = [
                 name: "Air Slash",
                 maxDamage: 40,
                 minDamage: 20,
-                maxCount: 10,
+                maxCount: 100,
             },
             {
                 name: "Razor Wind",
@@ -169,7 +169,39 @@ export const pokemons = [
                 name: "Pound",
                 maxDamage: 40,
                 minDamage: 20,
-                maxCount: 10,
+                maxCount: 100,
+            },
+            {
+                name: "Ancient Power",
+                maxDamage: 60,
+                minDamage: 45,
+                maxCount: 6,
+            },
+            {
+                name: "Aura Sphere",
+                maxDamage: 75,
+                minDamage: 60,
+                maxCount: 4,
+            },
+            {
+                name: "Psychic",
+                maxDamage: 130,
+                minDamage: 110,
+                maxCount: 2,
+            }
+        ]
+    },
+    {
+        img: 'http://sify4321.000webhostapp.com/mew.png',
+        name: 'Omosha',
+        type: 'ebanko',
+        hp: 404,
+        attacks: [
+            {
+                name: "Pound",
+                maxDamage: 40,
+                minDamage: 20,
+                maxCount: 100,
             },
             {
                 name: "Ancient Power",
