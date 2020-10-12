@@ -87,12 +87,12 @@ class Game {
         if (player.hp.current === 0) {
             $buttons.forEach(item => item.disabled = true);
             renderStartBtn('Restart Game!');
-            log = player === player2 ? `Round ${newRoundCounter()}<hr>${generateLog(player, player1, count)}<br><strong>${player1.name}</strong> - Выиграл!🏆<br><strong>${player.name}</strong> - Проиграл!😢`
-            : `${generateLog(player, player2, count)}<br><strong>${player2.name}</strong> - Выиграл!🏆<br><strong>${player.name}</strong> - Проиграл!😢<hr>`;
+            log = player === this.player2 ? `Round ${newRoundCounter()}<hr>${generateLog(player, this.player1, count)}<br><strong>${this.player1.name}</strong> - Выиграл!🏆<br><strong>${player.name}</strong> - Проиграл!😢`
+            : `${generateLog(player, this.player2, count)}<br><strong>${this.player2.name}</strong> - Выиграл!🏆<br><strong>${player.name}</strong> - Проиграл!😢<hr>`;
         } else {
-            log = player === player2
-                ? `Round ${newRoundCounter()}<hr>${generateLog(player, player1, count)}`
-                : `${generateLog(player, player2, count)}<hr>`;
+            log = player === this.player2
+                ? `Round ${newRoundCounter()}<hr>${generateLog(player, this.player1, count)}`
+                : `${generateLog(player, this.player2, count)}<hr>`;
         }
         $paragraph.innerHTML = `${ log }`;
         $logs.insertBefore($paragraph, $logs.children[0]);
